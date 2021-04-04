@@ -5,7 +5,7 @@ from flask_login import LoginManager
 
 
 import models 
-from resources.users import user
+from resources.users import lifter
  
 
 DEBUG = True
@@ -21,11 +21,11 @@ app.secret_key = 'TOPSECRETDONOTSTEAL'
 login_manager.init_app(app)
 
 @login_manager.user_loader
-def load_user(user_id):
+def load_user(lifter_id):
     try:
-        return models.User.get(models.User.id == user_id)
+        return models.Lifter.get(models.Lifter.id == lifter_id)
     except:
-        print(f'User not found: {user_id}')
+        print(f'Lifter not found: {lifter_id}')
         return None
 
 
@@ -43,8 +43,8 @@ def after_request(response):
     return response
 
 
-CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
-app.register_blueprint(user, url_prefix='/user')
+CORS(lifter, origins=['http://localhost:3000'], supports_credentials=True)
+app.register_blueprint(lifter, url_prefix='/lifter')
 
 
 # Default route ends in / 

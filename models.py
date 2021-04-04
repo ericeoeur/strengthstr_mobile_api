@@ -6,7 +6,7 @@ from flask_login import UserMixin
 # Call the database here, but make it manually first in terminal 
 DATABASE = PostgresqlDatabase('strengthstr')
 
-class User (UserMixin, Model):
+class Lifter (UserMixin, Model):
   username = CharField(unique=True)
   email = CharField(unique=True)
   password = CharField()
@@ -16,48 +16,50 @@ class User (UserMixin, Model):
 
   class Meta:
     database = DATABASE
+    legacy_table_names=False
 
 
 class OneRepMax(Model):
-  maxBench = IntegerField()
-  maxPress = IntegerField()
-  maxDeadlift = IntegerField()
-  maxSquat = IntegerField()
-  user = ForeignKeyField(User, backref='oneRepMaxes')
+  lift_name = CharField()
+  max_weight = IntegerField()
+  lifter = ForeignKeyField(Lifter, backref='one_rep_maxes')
+  # By default this is a one to many relationship 
+  # if you want to do ONE to ONE (aka (only ONE) ONE REP MAX for the lifter) example:   lifter = ForeignKeyField(Lifter, backref='one_rep_maxes', unique=True)
+
   
   class Meta: 
     database = DATABASE 
+    legacy_table_names=False
     
     
-class WorkoutExercises(Model):
+class Workout(Model):
   created_at = DateTimeField(default=datetime.now)
-  note = TextField()
-  image = CharField()
+  note = TextField(null=True)
+  image = CharField(null=True)
   # Insert Something there to hold an array of OneExcercises? ForeignKeyField(s)????
   # exercises = ForeignKeyField(OneExercise, backref='exercises') 
-  user = ForeignKeyField(User, backref='Workouts')
+  lifter = ForeignKeyField(Lifter, backref='workouts')
   
   class Meta: 
     database = DATABASE
-    
+    legacy_table_names=False
 
-class OneExercise(Model):
-  liftName = CharField()
+class Exercise(Model):
+  lift_name = CharField()
   weight = IntegerField()
   sets = IntegerField()
   reps = IntegerField()
-  note = TextField()
+  note = TextField(null=True)
   completed = BooleanField()
-  workoutID = ForeignKeyField(WorkoutExercises, backref='OneExercise')
+  workout = ForeignKeyField(Workout, backref='exercises')
   # Do I even need to reference the user in the oneexercise model when it is only connected to each particular workout....? 
-  user = ForeignKeyField(User, backref='OneExercise') 
   
   class Meta: 
     database = DATABASE
-  
+    legacy_table_names=False
     
 def initialize():
   DATABASE.connect()
-  DATABASE.create_tables([User, OneRepMax, WorkoutExercises, OneExercise], safe=True)
+  DATABASE.create_tables([Lifter, OneRepMax, Workout, Exercise], safe=True)
   print('TABLES created')
   DATABASE.close()  
