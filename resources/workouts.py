@@ -28,7 +28,7 @@ def create_workouts():
 
   return jsonify(data=workout_dict, status={"code": 201, "message": "Successful workout creation"})
 
-
+# GET ONE WORKOUT FOR THE USER 
 @workout.route('/<workout_id>', methods=['GET'])
 def get_one_workout(workout_id):
   """
@@ -44,3 +44,18 @@ def get_one_workout(workout_id):
     return jsonify(data=model_to_dict(workout), status={'code': 200, 'message': 'Success'})
   except models.DoesNotExist:
     return jsonify(data={}, status={'code': 404, 'message' : f'workout resource {workout_id} does not exist'})
+  
+# DELETE A WORKOUT
+@workout.route('/<workout_id>', methods=['DELETE'])
+def delete_workout(workout_id):
+  query = models.Workout.delete().where(models.Workout.id == workout_id)
+  del_rows = query.execute()
+  # del_rows = models.Dog.delete_by_id(dog_id)
+
+  print(f'deleted rows: {del_rows}')
+
+  # 0 is a falsy value. If del_rows is anything other than 0 we know the operation worked
+  if del_rows:
+    return jsonify(data=f'Deleted {del_rows} successfully', status={'code': 200, 'message':'resource successfully deleted'})
+  else:
+    return jsonify(data='No resource to delete', status={'code': 404, 'message': f'Dog resource {dog_id} does not exist'})
