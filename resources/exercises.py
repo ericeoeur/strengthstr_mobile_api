@@ -37,6 +37,36 @@ def create_exercise(workout_id):
   return jsonify(data=exercise_dict, status={"code": 201, "message": "Successful exercise creation"})
 
 
+# GET ONE EXERCISE  
+@exercise.route('/<workout_id>/exercises/<exercise_id>', methods=['GET'])
+def get_one_exercise(workout_id, exercise_id):
+  print(f'Searching for exercise_id: {exercise_id}')
+  
+  try:
+    exercise = models.Exercise.get_by_id(exercise_id)
+
+    return jsonify(data=model_to_dict(exercise), status={'code': 200, 'message': 'Succesful update'})
+  except models.DoesNotExist:
+    return jsonify(data={}, status={'code': 404, 'message' : f'Exercise {exercise_id} does not exist'})
+
+# UPDATE A WORKOUT 
+@exercise.route('/<workout_id>/exercises/<exercise_id>', methods=['PUT'])
+def update_exercise(workout_id, exercise_id):
+  payload = request.get_json()
+
+  query = models.Exercise.update(**payload).where(models.Exercise.id == exercise_id)
+  
+  try:
+    query.execute()
+
+    exercise = models.Exercise.get_by_id(exercise_id)
+
+    return jsonify(data=model_to_dict(exercise), status={'code': 200, 'message': 'Succesful update'})
+  except models.DoesNotExist:
+    return jsonify(data={}, status={'code': 404, 'message' : f'Exercise {exercise_id} does not exist'})
+
+
+
 # DELETE A WORKOUT
 @exercise.route('/<workout_id>/exercises/<exercise_id>', methods=['DELETE'])
 def delete_workout(workout_id, exercise_id):
