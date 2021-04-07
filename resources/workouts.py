@@ -40,6 +40,8 @@ def get_one_workout(workout_id):
   print(f'Searching for workout_id: {workout_id}')
   try:
     workout = models.Workout.get_by_id(workout_id)
+    print('test')
+    print(workout)
 
     return jsonify(data=model_to_dict(workout), status={'code': 200, 'message': 'Success'})
   except models.DoesNotExist:
