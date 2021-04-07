@@ -6,6 +6,7 @@ from flask_login import LoginManager
 
 import models 
 from resources.users import lifter
+from resources.workouts import workout
  
 
 DEBUG = True
@@ -45,6 +46,9 @@ def after_request(response):
 
 CORS(lifter, origins=['http://localhost:3000'], supports_credentials=True)
 app.register_blueprint(lifter, url_prefix='/lifter')
+
+CORS(workout, origins=['http://localhost:3000'], supports_credentials=True)
+app.register_blueprint(workout, url_prefix='/workouts')
 
 
 # Default route ends in / 

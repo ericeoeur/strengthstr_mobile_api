@@ -1,4 +1,5 @@
 import models
+import json
 
 from flask import request, jsonify, Blueprint
 from flask_bcrypt import generate_password_hash, check_password_hash
@@ -23,9 +24,23 @@ def test():
 # Register a User  
 @lifter.route('/register', methods=['POST'])
 def register():
+    
+    # payload = request.get_json()
+    print(request);
     payload = request.get_json()
+    
+    
+    print('sneepsnoop')
+    print(payload)
+    # print(payload['email'])
+    
+    # looks like the registion is sending a string instead of an object? how to convert it into an object? 
+    
 
     payload['email'] = payload['email'].lower()
+    
+    
+
 
     try:
         models.Lifter.get(models.Lifter.email == payload['email'])
