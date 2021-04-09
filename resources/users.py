@@ -79,7 +79,7 @@ def login():
 
             return jsonify(data=lifter_dict, status={'code': 200, 'message': 'Login Successful'})
         else:
-            return jsonify(data={}, status={'code': 401, 'message': 'Incorrect username or pasword'})
+            return jsonify(data={}, status={'code': 401, 'message': 'Incorrect username or password'})
 #  OK Login apparently works too lmao
 
 @lifter.route('/logout', methods=['GET'])

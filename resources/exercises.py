@@ -67,7 +67,7 @@ def update_exercise(workout_id, exercise_id):
 
 
 
-# DELETE A WORKOUT
+# DELETE A EXERCISE
 @exercise.route('/<workout_id>/exercises/<exercise_id>', methods=['DELETE'])
 def delete_workout(workout_id, exercise_id):
   query = models.Exercise.delete().where(models.Exercise.id == exercise_id)
@@ -80,3 +80,21 @@ def delete_workout(workout_id, exercise_id):
     return jsonify(data=f'Deleted {del_rows} successfully', status={'code': 200, 'message':'resource successfully deleted'})
   else:
     return jsonify(data='No resource to delete', status={'code': 404, 'message': f'Dog resource {dog_id} does not exist'})
+  
+
+# DELETE ALL EXERCISES
+@exercise.route('/<workout_id>/exercises', methods=['DELETE'])
+def delete_allExercises(workout_id):
+  allExercises = models.Exercise.delete().where(models.Exercise.workout == workout_id)
+  del_rows = allExercises.execute()
+
+  print(f'deleted rows: {del_rows}')
+
+  # 0 is a falsy value. If del_rows is anything other than 0 we know the operation worked
+  if del_rows:
+    return jsonify(data=f'Deleted {del_rows} successfully', status={'code': 200, 'message':'resource successfully deleted'})
+  else:
+    return jsonify(data='No resource to delete', status={'code': 404, 'message': f'Dog resource {dog_id} does not exist'})
+  
+  
+  exercises = models.Exercise.select().where(models.Exercise.workout == workout_id)
