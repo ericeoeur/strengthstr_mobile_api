@@ -2,9 +2,15 @@
 from peewee import *
 from datetime import datetime
 from flask_login import UserMixin
+import os
 
-# Call the database here, but make it manually first in terminal 
-DATABASE = PostgresqlDatabase('strengthstr')
+from playhouse.db_url import connect
+
+
+if 'ON_HEROKU' in os.environ:                         
+  DATABASE = connect(os.environ.get('DATABASE_URL'))                                                   
+else:
+  DATABASE = PostgresqlDatabase('strengthstr')
 
 class Lifter (UserMixin, Model):
   username = CharField(unique=True)

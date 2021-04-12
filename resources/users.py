@@ -39,8 +39,6 @@ def register():
 
     payload['email'] = payload['email'].lower()
     
-    
-
 
     try:
         models.Lifter.get(models.Lifter.email == payload['email'])

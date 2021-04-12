@@ -17,6 +17,20 @@ def get_all_workouts():
   except models.DoesNotExist:
     return jsonify(data={}, status={'code': 401, 'message' :'Error getting the resources'})
   
+# COUNT ALL WORKOUTS FROM CURRENT USER 
+@workout.route('/<lifter_id>/count', methods=['GET'])
+def count_all_workouts(lifter_id):
+  
+  # countedWorkouts = models.Workout.select().count().where(models.Workout.lifter_id == lifter_id)
+  try:
+    countedWorkouts = models.Workout.select().where(models.Workout.lifter_id == lifter_id).count()
+    return jsonify(data=countedWorkouts, status={'code': 200, 'message': 'Success'})
+  
+  except models.DoesNotExist:
+    return jsonify(data={}, status={'code': 401, 'message' :'Error getting the resources'})
+  
+  
+  
 # CREATE A WORKOUT FOR A CURRENT USER  
 @workout.route('/', methods=['POST'])
 def create_workouts():

@@ -2,7 +2,7 @@
 from flask import Flask, jsonify, g
 from flask_cors import CORS
 from flask_login import LoginManager
-
+import os
 
 import models 
 from resources.users import lifter
@@ -66,10 +66,12 @@ def index():
 
 
 
-# @app.route('/json')
-# def dog():
-#     return jsonify(name="Frankie", age=8)
-
+# ADD THESE THREE LINES -- because we need to initialize the
+# tables in production too!
+if 'ON_HEROKU' in os.environ: 
+  print('\non heroku!')
+  models.initialize()
+  
 # Run the application 
 if __name__ == '__main__':
   models.initialize()

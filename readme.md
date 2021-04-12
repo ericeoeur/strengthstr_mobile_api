@@ -60,6 +60,12 @@ SELECT lifter.username, workout.id, exercise.lift_name, exercise.weight, exercis
 SELECT lifter.username, workout.id as workout_id, exercise.lift_name, exercise.weight, exercise.sets, exercise.reps FROM workout JOIN exercise on exercise.workout_id = workout.id JOIN lifter on lifter.id = workout.lifter_id WHERE workout.id = 1; //with alias 
 
 
+# Count Number of Workouts by Lifter ID
+SELECT COUNT(*) FROM workout  where lifter_id = 1;
 
+# Count Number of successfully completed lifts
+
+
+# Count number of failed lifts 
 
 
