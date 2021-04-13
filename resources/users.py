@@ -24,22 +24,10 @@ def test():
 # Register a User  
 @lifter.route('/register', methods=['POST'])
 def register():
-    
-    # payload = request.get_json()
-    print(request);
-    payload = request.get_json()
-    
-    
-    print('sneepsnoop')
-    print(payload)
-    # print(payload['email'])
-    
-    # looks like the registion is sending a string instead of an object? how to convert it into an object? 
-    
 
+    payload = request.get_json()
     payload['email'] = payload['email'].lower()
     
-
     try:
         models.Lifter.get(models.Lifter.email == payload['email'])
         return jsonify(data={}, status={'code': 401, 'message': 'A user with that email already exists'})
@@ -61,7 +49,7 @@ def login():
     payload = request.get_json()
     payload['email'] = payload['email'].lower()
 
-# When i come back, need to change the validation to username not email
+
     try:
         lifter = models.Lifter.get(models.Lifter.email == payload['email'])
     except models.DoesNotExist:

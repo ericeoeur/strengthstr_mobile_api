@@ -1,4 +1,6 @@
-test
+# Starting Strength Mobile API 
+
+Below is a list of all the SQL lines of code that assisted in the production of StrengthStr Mobile. 
 
 
 ## One Rep Max
@@ -63,9 +65,5 @@ SELECT lifter.username, workout.id as workout_id, exercise.lift_name, exercise.w
 # Count Number of Workouts by Lifter ID
 SELECT COUNT(*) FROM workout  where lifter_id = 1;
 
-# Count Number of successfully completed lifts
-
-
-# Count number of failed lifts 
 
 

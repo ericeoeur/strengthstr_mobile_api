@@ -44,7 +44,7 @@ def after_request(response):
     g.db.close()
     return response
 
-
+# CORS
 CORS(lifter, origins=['http://localhost:3000'], supports_credentials=True)
 app.register_blueprint(lifter, url_prefix='/lifter')
 
@@ -53,17 +53,6 @@ app.register_blueprint(workout, url_prefix='/workouts')
 
 CORS(exercise, origins=['http://localhost:3000'], supports_credentials=True)
 app.register_blueprint(exercise, url_prefix='/workouts')
-
-
-# Default route ends in / 
-@app.route('/')
-def index():
-  return 'hi'
-
-
-
-
-
 
 
 # ADD THESE THREE LINES -- because we need to initialize the
